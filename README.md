@@ -26,20 +26,34 @@ As the dataset is meant to represent taxi fares in New York City, the values of 
 #### Location-based columns
 To better analyze the pickup and dropoff points in the dataset, I converted each location into Point data types using the shapely.geometry library. The following is an example of the pickup and dropoff locations:
 
-### Cleaning
-
-#### Location-based columns
-
 **Pickup Location**: POINT (-73.99902 40.73915)
 
 **Dropoff Location**: POINT (-73.990369, 40.717866)
 
+### Cleaning
+
+#### Location-based columns
+
+
 # Exploratory Data Analysis
 
+## Initial Data Exploration
 
+### Figure 1
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/quad-graphs.png">
 
-The fare_amounts column is right-skewed with a mean of $11.35 and standard deviation of $9.98.
+#### Key Takeaways
+* The fare_amounts column is right-skewed with a mean of $11.35 and standard deviation of $9.98.
+* There appears to be peaks in the pickup datetime distribution, but there does not seem be a conclusive pattern.
+* There does not seem be a relationship between the price and pickup datetime.
+* There does not seem be a relationship between the price and the week of day of the trip.
 
+### Figure 2
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/location_graphs.png">
+
+#### Key Takeaways
+
+###
 
 
 # Model Development
