@@ -39,7 +39,7 @@ To better analyze the pickup and dropoff points in the dataset, I converted each
 
 ## Initial Data Exploration
 
-### Figure 1
+### Fare & Datetime Distributions, Fare Amounts by Datetime, Mean Fares by the Day of the Week
 <img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/quad-graphs.png">
 
 #### Key Takeaways
@@ -48,15 +48,53 @@ To better analyze the pickup and dropoff points in the dataset, I converted each
 * There does not seem be a relationship between the price and pickup datetime.
 * There does not seem be a relationship between the price and the week of day of the trip.
 
-### Figure 2
+### Latitude & Longitude Distributions
 <img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/location_graphs.png">
 
 #### Key Takeaways
+* The latitude columns are moderately normally distributed while the longitude columns are right-skewed.
 
-###
+### Pickup & Dropoff Locations Before Cleaning
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/pickup_locs.png">
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/dropoff_locs.png">
 
+#### Key Takeaways
+After visually analyzing the geospatial data, the dataset was cleaned using the following conditions:
+* Pickup and Dropoff locations must be in sensible range of New York City Boroughs (outliers were removed)
+* Pickup and Dropoff locations must be different from one another (trips with idential pickup and dropoff locations were removed)
+* Pickup and Dropoff locations must be on land (locations in bodies of water were removed)
+
+### Pickup & Dropoff Locations After Cleaning
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/clean_pickup_locs.png">
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/clean_dropoff_locs.png">
+
+#### Key Takeaways
+* The vast majority of pickup and dropoff locations are in Manhattan, Brooklyn, and Queens.
+
+### Pickup & Dropoff Heatmap for NYC Boroughs
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/nyc_pickups.png">
+<img src="https://github.com/collin-k/taxi-fare-prediction/blob/main/visualizations/nyc_dropoffs.png">
+
+#### Key Takeaways
+* The majority of pickups and dropoffs within NYC boroughs are in Manhattan and East New York (in Brooklyn).
 
 # Model Development
 
- 
+### Baseline Model
+#### Description & Initial Results
+To investigate the dataset, I built a baseline model using minimal feature engineering. The pickup_datetime column was parsed to extract and create dummy columns for year, month, hour of pickup. Then, the distance traveled was calculating using 'Manhattan Distance.' Lastly, the latitude and longitude columns were scaled manually for better model performance. The model consisted of two (2) hidden layers.
 
+**Test loss (MSE):** 106.10
+
+**Test RMSE:** 8.92
+
+#### Key Takeaways
+As discovered during data analysis, the mean fare of the dataset is $11.35. This indicated that the baseline model, with a root mean squared error (RMSE) of $8.92, performs poorly. The next steps were to adjust my feature engineering methods and model architecture.
+
+### Final Model
+#### Description & Results
+As discovered during data analysis, the there was no clear relationship between the pickup_datetime and fare_amount columns. The pickup_datetime column, therefore, was removed from the list of features. To test for model performance, distance traveled was calculated using two (2) alternative methods (Harversine, Euclidean). Then, two (2) alternative methods of coordinate scaling were used (scikit-learn's MinMaxScaler() and StandardScaler()). To account for minor differences between different pickup and dropoff locations, the latitude and longitude values were bucketized to, then, create crossed columns. After testing the model with a different number of hidden layers and nodes per layers, the final model consisted of two (2) hidden layers with sixty-four (64) and thirty-two (32) nodes, respectively. 
+
+**Test Loss (MSE):** 35.06
+
+**Test RMSE:** 3.82
